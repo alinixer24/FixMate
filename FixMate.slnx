@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FixMate.App/FixMate.App.csproj" />
+    <Project Path="src/FixMate.Core/FixMate.Core.csproj" />
+    <Project Path="src/FixMate.Infrastructure/FixMate.Infrastructure.csproj" />
+  </Folder>
+</Solution>

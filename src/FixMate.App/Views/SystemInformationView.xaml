@@ -1,0 +1,155 @@
+<UserControl x:Class="FixMate.App.Views.SystemInformationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="38,34">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="System information" Margin="0,8,0,0" FontSize="30" FontWeight="SemiBold" />
+                <TextBlock Text="Hardware models and Windows details detected on this PC."
+                           Margin="0,8,0,0"
+                           FontSize="15"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+            </StackPanel>
+            <Button Grid.Column="1"
+                    Content="Refresh"
+                    Command="{Binding RefreshCommand}"
+                    VerticalAlignment="Center"
+                    Padding="18,10"
+                    Background="{DynamicResource AccentBrush}"
+                    Foreground="White"
+                    BorderThickness="0"
+                    Cursor="Hand" />
+        </Grid>
+
+        <TextBlock Grid.Row="1"
+                   Text="{Binding LastScannedText}"
+                   Margin="0,18,0,0"
+                   FontSize="12"
+                   Foreground="{DynamicResource SecondaryTextBrush}" />
+        <TextBlock Grid.Row="2"
+                   Text="{Binding ErrorMessage}"
+                   Margin="0,8,0,0"
+                   TextWrapping="Wrap"
+                   Foreground="#FFFF8A8A" />
+
+        <Border Grid.Row="3"
+                Margin="0,20,0,0"
+                Padding="20"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="WINDOWS" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="{Binding OperatingSystem.Name}"
+                               Margin="0,8,12,0"
+                               FontSize="17"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding OperatingSystem.Details}"
+                               Margin="0,6,12,0"
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource SecondaryTextBrush}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="COMPUTER" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="{Binding OperatingSystem.MachineName}"
+                               Margin="0,8,0,0"
+                               FontSize="17"
+                               FontWeight="SemiBold" />
+                    <TextBlock Margin="0,6,0,0" Foreground="{DynamicResource SecondaryTextBrush}">
+                        <Run Text="Version " />
+                        <Run Text="{Binding OperatingSystem.Version}" />
+                        <Run Text=" · " />
+                        <Run Text="{Binding OperatingSystem.Architecture}" />
+                    </TextBlock>
+                    <TextBlock Margin="0,5,0,0"
+                               FontSize="12"
+                               Foreground="{DynamicResource SecondaryTextBrush}">
+                        <Run Text="Status: " />
+                        <Run Text="{Binding OperatingSystem.Status}" />
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="4" Margin="0,24,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Hardware" FontSize="19" FontWeight="SemiBold" />
+                <TextBlock Grid.Column="1"
+                           Text="{Binding ScanStatusText}"
+                           VerticalAlignment="Center"
+                           FontSize="12"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+            </Grid>
+            <ItemsControl ItemsSource="{Binding Components}" Margin="0,12,0,0">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="2" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,0,10,10"
+                                Padding="17"
+                                Background="{DynamicResource SurfaceBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="9">
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Category}"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource AccentBrush}" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Status}"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" />
+                                </Grid>
+                                <TextBlock Text="{Binding Model}"
+                                           Margin="0,9,0,0"
+                                           FontSize="15"
+                                           FontWeight="SemiBold"
+                                           TextWrapping="Wrap" />
+                                <TextBlock Text="{Binding Manufacturer}"
+                                           Margin="0,5,0,0"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           TextWrapping="Wrap" />
+                                <TextBlock Text="{Binding Details}"
+                                           Margin="0,5,0,0"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Grid>
+</UserControl>

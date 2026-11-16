@@ -1,0 +1,87 @@
+<UserControl x:Class="FixMate.App.Views.TroubleshootingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="38,34">
+        <StackPanel>
+            <TextBlock Text="Troubleshooting &amp; Error Center" Margin="0,8,0,0" FontSize="30" FontWeight="SemiBold" />
+            <TextBlock Text="Choose a symptom for guided checks, or look up a common Windows error code offline."
+                       Margin="0,8,0,0"
+                       FontSize="15"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       TextWrapping="Wrap" />
+
+            <Border Margin="0,22,0,0"
+                    Padding="20"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <StackPanel>
+                    <TextBlock Text="GUIDED TROUBLESHOOTING" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="Problem to troubleshoot"
+                               Margin="0,10,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}" />
+                    <ComboBox ItemsSource="{Binding TroubleshootingTopics}"
+                              SelectedItem="{Binding SelectedTopic}"
+                              TextSearch.TextPath="Title"
+                              Margin="0,6,0,0"
+                              Padding="8">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Title}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBlock Text="{Binding SelectedTopic.Description}"
+                               Margin="0,12,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               TextWrapping="Wrap" />
+                    <ItemsControl ItemsSource="{Binding SelectedTopic.Steps}" Margin="0,8,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel Margin="0,5,0,0" LastChildFill="True">
+                                    <TextBlock Text="•" Foreground="{DynamicResource AccentBrush}" Margin="0,0,10,0" />
+                                    <TextBlock Text="{Binding}" TextWrapping="Wrap" />
+                                </DockPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <Border Margin="0,16,0,0"
+                    Padding="20"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <StackPanel>
+                    <TextBlock Text="OFFLINE ERROR CODE LOOKUP" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="Supports selected common Windows HRESULTs and stop codes. Enter the code as shown, with or without the 0x prefix."
+                               Margin="0,8,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               TextWrapping="Wrap" />
+                    <DockPanel Margin="0,12,0,0" LastChildFill="False">
+                        <TextBox Text="{Binding ErrorCode, UpdateSourceTrigger=PropertyChanged}"
+                                 MinWidth="260"
+                                 Padding="9"
+                                 VerticalContentAlignment="Center"
+                                 ToolTip="Example: 0x80070005" />
+                        <Button Content="Look up"
+                                Command="{Binding LookupErrorCodeCommand}"
+                                Margin="10,0,0,0"
+                                Padding="16,8" />
+                    </DockPanel>
+                    <TextBlock Text="{Binding ErrorLookupResult}"
+                               Margin="0,14,0,0"
+                               TextWrapping="Wrap" />
+                    <TextBlock Text="For full details, record the source and time of the error from Windows Update history, the application, or Event Viewer."
+                               Margin="0,12,0,0"
+                               FontSize="12"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

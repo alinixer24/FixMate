@@ -1,0 +1,70 @@
+<UserControl x:Class="FixMate.App.Views.DiagnosticsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="38,34">
+        <StackPanel>
+            <TextBlock Text="Diagnostics" Margin="0,8,0,0" FontSize="30" FontWeight="SemiBold" />
+            <TextBlock Text="Check network connectivity, storage health, and Windows system integrity."
+                       Margin="0,8,0,0"
+                       FontSize="15"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       TextWrapping="Wrap" />
+            <StackPanel Orientation="Horizontal" Margin="0,18,0,0">
+                <Button Content="Run checks"
+                        Command="{Binding RunDiagnosticsCommand}"
+                        IsEnabled="{Binding CanStartOperation}"
+                        Padding="16,9" />
+                <TextBlock Text="{Binding OperationStatusText}"
+                           Margin="14,0,0,0"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+            </StackPanel>
+            <TextBlock Text="{Binding ErrorMessage}"
+                       Margin="0,10,0,0"
+                       Foreground="#FFFF8A8A"
+                       TextWrapping="Wrap" />
+
+            <ItemsControl ItemsSource="{Binding Results}" Margin="0,20,0,0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,0,0,10"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding TestName}" FontSize="16" FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding Status}"
+                                               Margin="0,5,0,0"
+                                               Foreground="{DynamicResource AccentBrush}" />
+                                    <TextBlock Text="{Binding Summary}"
+                                               Margin="0,5,0,0"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               TextWrapping="Wrap" />
+                                </StackPanel>
+                                <Button Grid.Column="1"
+                                        Content="Run repair"
+                                        Command="{Binding DataContext.RepairCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding Area}"
+                                        IsEnabled="{Binding DataContext.CanStartOperation, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        Padding="14,8"
+                                        VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock Text="Repairs run only when selected. Windows integrity and disk repairs request administrator approval; scans may take several minutes."
+                       Margin="0,2,0,0"
+                       FontSize="12"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       TextWrapping="Wrap" />
+        </StackPanel>
+    </Grid>
+</UserControl>

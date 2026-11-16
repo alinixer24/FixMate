@@ -1,0 +1,115 @@
+<UserControl x:Class="FixMate.App.Views.ErrorCenterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="38,34">
+        <StackPanel>
+            <TextBlock Text="Error Center" Margin="0,8,0,0" FontSize="30" FontWeight="SemiBold" />
+            <TextBlock Text="Review recent Windows Application and System errors and warnings. Events are read-only; their presence alone does not establish a cause."
+                       Margin="0,8,0,0"
+                       FontSize="15"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       TextWrapping="Wrap" />
+
+            <StackPanel Orientation="Horizontal" Margin="0,18,0,0">
+                <Button Content="Refresh events" Command="{Binding RefreshCommand}" IsEnabled="{Binding CanRefresh}" Padding="15,8" />
+                <Button Content="Open Event Viewer" Command="{Binding OpenEventViewerCommand}" Margin="10,0,0,0" Padding="15,8" />
+                <TextBlock Text="{Binding OperationStatusText}"
+                           Margin="14,0,0,0"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+            </StackPanel>
+            <TextBlock Text="{Binding Status}"
+                       Margin="0,10,0,0"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       TextWrapping="Wrap" />
+            <TextBlock Text="{Binding ErrorMessage}"
+                       Margin="0,6,0,0"
+                       Foreground="#FFFF8A8A"
+                       TextWrapping="Wrap" />
+
+            <Border Margin="0,16,0,0"
+                    Padding="14"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <StackPanel>
+                    <TextBlock Text="FILTER EVENTS" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <WrapPanel Margin="0,10,0,0" VerticalAlignment="Center">
+                        <StackPanel Width="220" Margin="0,0,10,8">
+                            <TextBlock Text="Search" Margin="0,0,0,4" Foreground="{DynamicResource SecondaryTextBrush}" />
+                            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                     Padding="8"
+                                     VerticalContentAlignment="Center"
+                                     ToolTip="Search event message, source, log, or ID" />
+                        </StackPanel>
+                        <StackPanel Width="170" Margin="0,0,10,8">
+                            <TextBlock Text="Source / log" Margin="0,0,0,4" Foreground="{DynamicResource SecondaryTextBrush}" />
+                            <TextBox Text="{Binding SourceFilter, UpdateSourceTrigger=PropertyChanged}"
+                                     Padding="8"
+                                     VerticalContentAlignment="Center"
+                                     ToolTip="Filter by provider or log name" />
+                        </StackPanel>
+                        <StackPanel Width="110" Margin="0,0,10,8">
+                            <TextBlock Text="Event ID" Margin="0,0,0,4" Foreground="{DynamicResource SecondaryTextBrush}" />
+                            <TextBox Text="{Binding EventIdFilter, UpdateSourceTrigger=PropertyChanged}"
+                                     Padding="8"
+                                     VerticalContentAlignment="Center"
+                                     ToolTip="Filter by event ID" />
+                        </StackPanel>
+                        <StackPanel Width="130" Margin="0,0,0,8">
+                            <TextBlock Text="Date range" Margin="0,0,0,4" Foreground="{DynamicResource SecondaryTextBrush}" />
+                            <ComboBox ItemsSource="{Binding DateRangeOptions}"
+                                      SelectedItem="{Binding SelectedDateRange}"
+                                      Padding="8"
+                                      ToolTip="Filter by event date" />
+                        </StackPanel>
+                    </WrapPanel>
+
+                    <DataGrid ItemsSource="{Binding FilteredEvents}"
+                              SelectedItem="{Binding SelectedEvent}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              SelectionMode="Single"
+                              HeadersVisibility="Column"
+                              RowBackground="{DynamicResource SidebarBackgroundBrush}"
+                              AlternatingRowBackground="{DynamicResource SurfaceBrush}"
+                              GridLinesVisibility="Horizontal"
+                              HorizontalGridLinesBrush="{DynamicResource BorderBrush}"
+                              MinHeight="230"
+                              MaxHeight="360"
+                              Margin="0,6,0,0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Time" Binding="{Binding TimeCreated, StringFormat={}{0:g}}" Width="145" />
+                            <DataGridTextColumn Header="Level" Binding="{Binding Level}" Width="85" />
+                            <DataGridTextColumn Header="Log" Binding="{Binding LogName}" Width="100" />
+                            <DataGridTextColumn Header="Source" Binding="{Binding Provider}" Width="180" />
+                            <DataGridTextColumn Header="Event ID" Binding="{Binding EventId}" Width="75" />
+                            <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock Text="TECHNICAL DETAILS" Margin="0,16,0,0" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="{Binding SelectedEvent.TechnicalDetails}"
+                               Margin="0,8,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               TextWrapping="Wrap" />
+                    <TextBox Text="{Binding SelectedEvent.Message, Mode=OneWay}"
+                             Margin="0,8,0,0"
+                             MinHeight="80"
+                             IsReadOnly="True"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"
+                             ToolTip="Event description reported by Windows" />
+                </StackPanel>
+            </Border>
+            <TextBlock Text="Showing up to 200 recent error and warning events. Use Event Viewer for date/source/event-ID queries and full event properties. Messages can be unavailable if their provider is missing."
+                       Margin="0,10,0,0"
+                       FontSize="12"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       TextWrapping="Wrap" />
+        </StackPanel>
+    </Grid>
+</UserControl>

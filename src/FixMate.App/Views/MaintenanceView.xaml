@@ -1,0 +1,288 @@
+<UserControl x:Class="FixMate.App.Views.MaintenanceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="38,34">
+        <StackPanel>
+            <TextBlock Text="Maintenance" Margin="0,8,0,0" FontSize="30" FontWeight="SemiBold" />
+            <TextBlock Text="Review this user's startup items and safely reclaim space from old temporary files."
+                       Margin="0,8,0,0"
+                       FontSize="15"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       TextWrapping="Wrap" />
+            <TextBlock Text="{Binding ErrorMessage}"
+                       Margin="0,10,0,0"
+                       Foreground="#FFFF8A8A"
+                       TextWrapping="Wrap" />
+
+            <Border Margin="0,20,0,0"
+                    Padding="20"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="STARTUP ITEMS" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                            <TextBlock Text="Only current-user Run entries and the current-user Startup folder are managed. Changes require confirmation."
+                                       Margin="0,6,0,0"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       TextWrapping="Wrap" />
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                Content="Refresh list"
+                                Command="{Binding RefreshStartupCommand}"
+                                IsEnabled="{Binding CanStartOperation}"
+                                Padding="14,8"
+                                VerticalAlignment="Center" />
+                    </Grid>
+                    <ItemsControl ItemsSource="{Binding StartupEntries}" Margin="0,14,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="0,0,0,8"
+                                        Padding="12"
+                                        Background="{DynamicResource SidebarBackgroundBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="7">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                            <TextBlock Text="{Binding Source}"
+                                                       Margin="0,3,0,0"
+                                                       FontSize="11"
+                                                       Foreground="{DynamicResource AccentBrush}" />
+                                            <TextBlock Text="{Binding Command}"
+                                                       Margin="0,3,0,0"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                                       TextWrapping="Wrap" />
+                                            <TextBlock Text="{Binding StateText}"
+                                                       Margin="0,3,0,0"
+                                                       FontSize="11"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}" />
+                                        </StackPanel>
+                                        <Button Grid.Column="1"
+                                                Content="{Binding ActionText}"
+                                                Command="{Binding DataContext.ToggleStartupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                IsEnabled="{Binding DataContext.CanStartOperation, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                Padding="12,7"
+                                                VerticalAlignment="Center" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Text="{Binding StartupListStatus}"
+                               Margin="0,8,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Border Margin="0,16,0,0"
+                    Padding="20"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <StackPanel>
+                    <TextBlock Text="TEMPORARY FILES" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="Scans only your local temporary folder. Only files older than seven days are eligible; folders, system locations, and the Recycle Bin are excluded."
+                               Margin="0,7,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+                        <Button Content="Scan files"
+                                Command="{Binding ScanTemporaryFilesCommand}"
+                                IsEnabled="{Binding CanStartOperation}"
+                                Padding="14,8" />
+                        <Button Content="Review and clean"
+                                Command="{Binding CleanTemporaryFilesCommand}"
+                                IsEnabled="{Binding CanStartOperation}"
+                                Margin="10,0,0,0"
+                                Padding="14,8" />
+                        <TextBlock Text="{Binding OperationStatusText}"
+                                   Margin="14,0,0,0"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource SecondaryTextBrush}" />
+                    </StackPanel>
+                    <TextBlock Text="{Binding CleanupStatus}"
+                               Margin="0,12,0,0"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Border Margin="0,16,0,0"
+                    Padding="20"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="STORAGE OVERVIEW" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                            <TextBlock Text="Drive capacity is read from Windows. Folder analysis is read-only and never deletes or changes files."
+                                       Margin="0,6,0,0"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       TextWrapping="Wrap" />
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                Content="Refresh drives"
+                                Command="{Binding RefreshStorageVolumesCommand}"
+                                IsEnabled="{Binding CanStartOperation}"
+                                Padding="14,8"
+                                VerticalAlignment="Center" />
+                    </Grid>
+                    <TextBlock Text="{Binding VolumeStatus}"
+                               Margin="0,10,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}" />
+                    <DataGrid ItemsSource="{Binding StorageVolumes}"
+                              Margin="0,8,0,0"
+                              MaxHeight="170"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              IsReadOnly="True"
+                              HeadersVisibility="Column"
+                              RowBackground="{DynamicResource SidebarBackgroundBrush}"
+                              AlternatingRowBackground="{DynamicResource SurfaceBrush}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Drive" Binding="{Binding RootPath}" Width="*" />
+                            <DataGridTextColumn Header="File system" Binding="{Binding FileSystem}" Width="*" />
+                            <DataGridTextColumn Header="Capacity" Binding="{Binding TotalBytes, StringFormat={}{0:N0} bytes}" Width="*" />
+                            <DataGridTextColumn Header="Available" Binding="{Binding AvailableBytes, StringFormat={}{0:N0} bytes}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <TextBlock Text="LARGEST FILES IN A FOLDER" Margin="0,16,0,0" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="Select a folder to scan. Linked folders and inaccessible locations are skipped; a scan can be canceled at any time."
+                               Margin="0,6,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               TextWrapping="Wrap" />
+                    <DockPanel Margin="0,12,0,0">
+                        <Button Content="Choose folder"
+                                DockPanel.Dock="Right"
+                                Command="{Binding ChooseStorageFolderCommand}"
+                                IsEnabled="{Binding CanStartOperation}"
+                                Margin="10,0,0,0"
+                                Padding="14,8" />
+                        <TextBox Text="{Binding StorageFolderPath, Mode=OneWay}"
+                                 IsReadOnly="True"
+                                 VerticalContentAlignment="Center"
+                                 ToolTip="Folder selected for read-only analysis" />
+                    </DockPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Button Content="Analyze folder"
+                                Command="{Binding AnalyzeStorageCommand}"
+                                IsEnabled="{Binding CanStartOperation}"
+                                Padding="14,8" />
+                        <Button Content="Cancel scan"
+                                Command="{Binding CancelStorageScanCommand}"
+                                IsEnabled="{Binding IsStorageScanRunning}"
+                                Margin="10,0,0,0"
+                                Padding="14,8" />
+                    </StackPanel>
+                    <TextBlock Text="{Binding StorageStatus}"
+                               Margin="0,10,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               TextWrapping="Wrap" />
+                    <TextBox Text="{Binding StorageSearchText, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,10,0,0"
+                             ToolTip="Filter largest files by name or path" />
+                    <DataGrid ItemsSource="{Binding FilteredStorageFiles}"
+                              Margin="0,8,0,0"
+                              MaxHeight="260"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              IsReadOnly="True"
+                              HeadersVisibility="Column"
+                              RowBackground="{DynamicResource SidebarBackgroundBrush}"
+                              AlternatingRowBackground="{DynamicResource SurfaceBrush}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="File" Binding="{Binding Name}" Width="*" />
+                            <DataGridTextColumn Header="Size (bytes)" Binding="{Binding SizeBytes, StringFormat={}{0:N0}}" Width="140" />
+                            <DataGridTextColumn Header="Last modified" Binding="{Binding LastModified}" Width="170" />
+                            <DataGridTextColumn Header="Path" Binding="{Binding FullPath}" Width="2*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+
+            <Border Margin="0,16,0,0"
+                    Padding="20"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="INSTALLED APPLICATIONS" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                            <TextBlock Text="Inventory comes from standard Windows uninstall records. Uninstall actions remain under your control in Windows Settings."
+                                       Margin="0,6,0,0"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       TextWrapping="Wrap" />
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                Content="Open Installed Apps"
+                                Command="{Binding OpenInstalledAppsCommand}"
+                                Padding="14,8"
+                                VerticalAlignment="Center" />
+                    </Grid>
+                    <DockPanel Margin="0,14,0,0">
+                        <Button Content="Refresh inventory"
+                                DockPanel.Dock="Right"
+                                Command="{Binding RefreshApplicationsCommand}"
+                                IsEnabled="{Binding CanStartOperation}"
+                                Margin="10,0,0,0"
+                                Padding="14,8" />
+                        <TextBox Text="{Binding ApplicationSearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="9"
+                                 VerticalContentAlignment="Center"
+                                 ToolTip="Search name, publisher, or version" />
+                    </DockPanel>
+                    <TextBlock Text="{Binding ApplicationsStatus}"
+                               Margin="0,8,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               TextWrapping="Wrap" />
+                    <DataGrid ItemsSource="{Binding FilteredApplications}"
+                              Margin="0,10,0,0"
+                              MaxHeight="320"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              IsReadOnly="True"
+                              HeadersVisibility="Column"
+                              Background="{DynamicResource SurfaceBrush}"
+                              Foreground="{DynamicResource PrimaryTextBrush}"
+                              RowBackground="{DynamicResource SidebarBackgroundBrush}"
+                              AlternatingRowBackground="{DynamicResource SurfaceBrush}"
+                              BorderBrush="{DynamicResource BorderBrush}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="2*" />
+                            <DataGridTextColumn Header="Version" Binding="{Binding Version}" Width="*" />
+                            <DataGridTextColumn Header="Publisher" Binding="{Binding Publisher}" Width="2*" />
+                            <DataGridTextColumn Header="Installed" Binding="{Binding InstallDate, StringFormat={}{0:d}}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

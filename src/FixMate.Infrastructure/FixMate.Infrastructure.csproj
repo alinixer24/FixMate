@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net10.0-windows</TargetFramework>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.0" />
+	<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.14" />
+	<PackageReference Include="System.Diagnostics.EventLog" Version="10.0.0" />
+	<PackageReference Include="System.Management" Version="10.0.0" />
+	<ProjectReference Include="..\FixMate.Core\FixMate.Core.csproj" />
+  </ItemGroup>
+
+</Project>

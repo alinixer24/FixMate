@@ -1,0 +1,118 @@
+<UserControl x:Class="FixMate.App.Views.MonitoringView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:FixMate.App.Controls">
+    <Grid Margin="38,34">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBlock Text="Live monitoring" Margin="0,8,0,0" FontSize="30" FontWeight="SemiBold" />
+            <TextBlock Text="Live system usage and activity, sampled while this page is open."
+                       Margin="0,8,0,0"
+                       FontSize="15"
+                       Foreground="{DynamicResource SecondaryTextBrush}" />
+            <TextBlock Text="{Binding LastUpdatedText}"
+                       Margin="0,12,0,0"
+                       FontSize="12"
+                       Foreground="{DynamicResource SecondaryTextBrush}" />
+            <TextBlock Text="{Binding ErrorMessage}"
+                       Margin="0,6,0,0"
+                       TextWrapping="Wrap"
+                       Foreground="#FFFF8A8A" />
+        </StackPanel>
+
+        <UniformGrid Grid.Row="1" Columns="2" Margin="0,24,0,0">
+            <Border Margin="0,0,8,8" Padding="18" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+                <StackPanel>
+                    <TextBlock Text="CPU USAGE" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="{Binding CpuValue}" Margin="0,8,0,0" FontSize="27" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding CpuDetails}" Margin="0,4,0,0" FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+            <Border Margin="8,0,0,8" Padding="18" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+                <StackPanel>
+                    <TextBlock Text="MEMORY USAGE" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="{Binding MemoryValue}" Margin="0,8,0,0" FontSize="27" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding MemoryDetails}" Margin="0,4,0,0" FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+            <Border Margin="0,8,8,0" Padding="18" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+                <StackPanel>
+                    <TextBlock Text="DISK ACTIVITY" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Margin="0,8,0,0" FontSize="14" FontWeight="SemiBold">
+                        <Run Text="Read " /><Run Text="{Binding DiskReadValue, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock Margin="0,4,0,0" FontSize="14" FontWeight="SemiBold">
+                        <Run Text="Write " /><Run Text="{Binding DiskWriteValue, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock Text="{Binding DiskDetails}" Margin="0,4,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+            <Border Margin="8,8,0,0" Padding="18" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+                <StackPanel>
+                    <TextBlock Text="NETWORK ACTIVITY" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Margin="0,8,0,0" FontSize="14" FontWeight="SemiBold">
+                        <Run Text="Receive " /><Run Text="{Binding NetworkReceiveValue, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock Margin="0,4,0,0" FontSize="14" FontWeight="SemiBold">
+                        <Run Text="Send " /><Run Text="{Binding NetworkSendValue, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock Text="{Binding NetworkDetails}" Margin="0,4,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <TextBlock Grid.Row="2"
+                   Text="Temperature sensors are not connected in this build."
+                   Margin="0,14,0,0"
+                   FontSize="12"
+                   Foreground="{DynamicResource SecondaryTextBrush}" />
+
+        <StackPanel Grid.Row="3" Margin="0,22,0,0">
+            <TextBlock Text="Recent activity" FontSize="19" FontWeight="SemiBold" />
+            <UniformGrid Columns="2" Margin="0,12,0,0">
+                <Border Margin="0,0,8,8" Padding="16" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+                    <StackPanel>
+                        <TextBlock Text="CPU · last 60 samples" FontSize="13" Foreground="{DynamicResource SecondaryTextBrush}" />
+                        <controls:LiveLineChart Values="{Binding CpuHistory}" MaximumValue="100" Stroke="{DynamicResource AccentBrush}" Height="105" Margin="0,12,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Margin="8,0,0,8" Padding="16" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+                    <StackPanel>
+                        <TextBlock Text="Memory · last 60 samples" FontSize="13" Foreground="{DynamicResource SecondaryTextBrush}" />
+                        <controls:LiveLineChart Values="{Binding MemoryHistory}" MaximumValue="100" Stroke="{DynamicResource SuccessBrush}" Height="105" Margin="0,12,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Margin="0,8,8,0" Padding="16" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+                    <StackPanel>
+                        <TextBlock Text="Disk read · bytes per second" FontSize="13" Foreground="{DynamicResource SecondaryTextBrush}" />
+                        <controls:LiveLineChart Values="{Binding DiskReadHistory}" MaximumValue="104857600" Stroke="{DynamicResource AccentBrush}" Height="105" Margin="0,12,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Margin="8,8,0,0" Padding="16" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+                    <StackPanel>
+                        <TextBlock Text="Disk write · bytes per second" FontSize="13" Foreground="{DynamicResource SecondaryTextBrush}" />
+                        <controls:LiveLineChart Values="{Binding DiskWriteHistory}" MaximumValue="104857600" Stroke="{DynamicResource SuccessBrush}" Height="105" Margin="0,12,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Margin="8,8,0,0" Padding="16" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+                    <StackPanel>
+                        <TextBlock Text="Network receive · bytes per second" FontSize="13" Foreground="{DynamicResource SecondaryTextBrush}" />
+                        <controls:LiveLineChart Values="{Binding NetworkReceiveHistory}" MaximumValue="10485760" Stroke="{DynamicResource SuccessBrush}" Height="105" Margin="0,12,0,0" />
+                    </StackPanel>
+                </Border>
+                <Border Margin="8,8,0,0" Padding="16" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+                    <StackPanel>
+                        <TextBlock Text="Network send · bytes per second" FontSize="13" Foreground="{DynamicResource SecondaryTextBrush}" />
+                        <controls:LiveLineChart Values="{Binding NetworkSendHistory}" MaximumValue="10485760" Stroke="{DynamicResource AccentBrush}" Height="105" Margin="0,12,0,0" />
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+        </StackPanel>
+    </Grid>
+</UserControl>
