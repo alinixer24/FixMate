@@ -24,6 +24,8 @@ public partial class App : Application
         services.AddSingleton<IDiagnosticsProvider, WindowsDiagnosticsProvider>();
         services.AddSingleton<IMaintenanceProvider, WindowsMaintenanceProvider>();
         services.AddSingleton<IWindowsEventLogProvider, WindowsEventLogProvider>();
+        services.AddSingleton<IProcessInformationProvider, WindowsProcessInformationProvider>();
+        services.AddSingleton<IDriverInformationProvider, WindowsDriverInformationProvider>();
         services.AddSingleton<IAppSettingsStore, SqliteAppSettingsStore>();
         services.AddSingleton<AppSettings>();
         services.AddSingleton<OverviewViewModel>();
@@ -33,6 +35,8 @@ public partial class App : Application
         services.AddSingleton<TroubleshootingViewModel>();
         services.AddSingleton<ErrorCenterViewModel>();
         services.AddSingleton<MaintenanceViewModel>();
+        services.AddSingleton<ProcessManagerViewModel>();
+        services.AddSingleton<DriverCenterViewModel>();
         services.AddSingleton<SettingsViewModel>();
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<MainWindow>();

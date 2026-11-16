@@ -27,22 +27,31 @@
                            FontSize="15"
                            Foreground="{DynamicResource SecondaryTextBrush}" />
             </StackPanel>
-            <Button Grid.Column="1"
-                    Content="Refresh"
-                    Command="{Binding RefreshCommand}"
-                    VerticalAlignment="Center"
-                    Padding="18,10"
-                    Background="{DynamicResource AccentBrush}"
-                    Foreground="White"
-                    BorderThickness="0"
-                    Cursor="Hand" />
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <Button Content="Refresh"
+                        Command="{Binding RefreshCommand}"
+                        Padding="18,10"
+                        Background="{DynamicResource AccentBrush}"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Cursor="Hand" />
+                <Button Content="Export report"
+                        Command="{Binding ExportReportCommand}"
+                        Margin="0,8,0,0"
+                        Padding="18,10" />
+            </StackPanel>
         </Grid>
 
-        <TextBlock Grid.Row="1"
-                   Text="{Binding LastScannedText}"
-                   Margin="0,18,0,0"
-                   FontSize="12"
-                   Foreground="{DynamicResource SecondaryTextBrush}" />
+        <StackPanel Grid.Row="1" Margin="0,18,0,0">
+            <TextBlock Text="{Binding LastScannedText}"
+                       FontSize="12"
+                       Foreground="{DynamicResource SecondaryTextBrush}" />
+            <TextBlock Text="{Binding ReportStatus}"
+                       Margin="0,4,0,0"
+                       FontSize="12"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       TextWrapping="Wrap" />
+        </StackPanel>
         <TextBlock Grid.Row="2"
                    Text="{Binding ErrorMessage}"
                    Margin="0,8,0,0"

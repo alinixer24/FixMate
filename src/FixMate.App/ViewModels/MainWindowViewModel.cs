@@ -16,6 +16,8 @@ public sealed class MainWindowViewModel : ViewModelBase
         TroubleshootingViewModel troubleshooting,
         ErrorCenterViewModel errorCenter,
         MaintenanceViewModel maintenance,
+        ProcessManagerViewModel processManager,
+        DriverCenterViewModel driverCenter,
         SettingsViewModel settings)
     {
         _navigationService = navigationService;
@@ -32,6 +34,16 @@ public sealed class MainWindowViewModel : ViewModelBase
         ShowTroubleshootingCommand = new RelayCommand(() => _navigationService.NavigateTo(troubleshooting));
         ShowErrorCenterCommand = new RelayCommand(() => _navigationService.NavigateTo(errorCenter));
         ShowMaintenanceCommand = new RelayCommand(() => _navigationService.NavigateTo(maintenance));
+        ShowProcessManagerCommand = new RelayCommand(() =>
+        {
+            _navigationService.NavigateTo(processManager);
+            processManager.RefreshCommand.Execute(null);
+        });
+        ShowDriverCenterCommand = new RelayCommand(() =>
+        {
+            _navigationService.NavigateTo(driverCenter);
+            driverCenter.RefreshCommand.Execute(null);
+        });
         ShowSettingsCommand = new RelayCommand(() => _navigationService.NavigateTo(settings));
 
         _navigationService.NavigateTo(overview);
@@ -46,5 +58,7 @@ public sealed class MainWindowViewModel : ViewModelBase
     public ICommand ShowTroubleshootingCommand { get; }
     public ICommand ShowErrorCenterCommand { get; }
     public ICommand ShowMaintenanceCommand { get; }
+    public ICommand ShowProcessManagerCommand { get; }
+    public ICommand ShowDriverCenterCommand { get; }
     public ICommand ShowSettingsCommand { get; }
 }

@@ -74,6 +74,12 @@
         <DataTemplate DataType="{x:Type vm:MaintenanceViewModel}">
             <views:MaintenanceView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ProcessManagerViewModel}">
+            <views:ProcessManagerView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:DriverCenterViewModel}">
+            <views:DriverCenterView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
             <views:SettingsView />
         </DataTemplate>
@@ -155,6 +161,12 @@
                     </Button>
                     <Button Style="{StaticResource NavigationButtonStyle}" Command="{Binding ShowMaintenanceCommand}" ToolTip="Maintenance">
                         <DockPanel><TextBlock Text="&#xE90F;" FontFamily="Segoe MDL2 Assets" Width="24" VerticalAlignment="Center" /><TextBlock Text="Maintenance" VerticalAlignment="Center" /></DockPanel>
+                    </Button>
+                    <Button Style="{StaticResource NavigationButtonStyle}" Command="{Binding ShowProcessManagerCommand}" ToolTip="Process manager">
+                        <DockPanel><TextBlock Text="&#xE9F5;" FontFamily="Segoe MDL2 Assets" Width="24" VerticalAlignment="Center" /><TextBlock Text="Process manager" VerticalAlignment="Center" /></DockPanel>
+                    </Button>
+                    <Button Style="{StaticResource NavigationButtonStyle}" Command="{Binding ShowDriverCenterCommand}" ToolTip="Driver center">
+                        <DockPanel><TextBlock Text="&#xE950;" FontFamily="Segoe MDL2 Assets" Width="24" VerticalAlignment="Center" /><TextBlock Text="Driver center" VerticalAlignment="Center" /></DockPanel>
                     </Button>
                 </StackPanel>
                 <Button Grid.Row="2"

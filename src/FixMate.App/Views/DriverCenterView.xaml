@@ -1,0 +1,35 @@
+<UserControl x:Class="FixMate.App.Views.DriverCenterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="38,34">
+        <StackPanel>
+            <DockPanel Margin="0,0,0,8">
+                <Border Width="44" Height="44" CornerRadius="13" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                    <TextBlock Text="&#xE950;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <TextBlock Text="Driver center" Margin="14,0,0,0" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Center" />
+            </DockPanel>
+            <TextBlock Text="Review Plug and Play driver records reported by Windows. FixMate does not download, install, roll back, or remove drivers; use Device Manager and trusted manufacturer sources for changes."
+                       Margin="0,8,0,0" FontSize="15" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+            <StackPanel Orientation="Horizontal" Margin="0,18,0,0">
+                <Button Content="Refresh drivers" Command="{Binding RefreshCommand}" IsEnabled="{Binding CanRefresh}" Padding="15,8" />
+                <Button Content="Open Device Manager" Command="{Binding OpenDeviceManagerCommand}" Margin="10,0,0,0" Padding="15,8" />
+                <TextBlock Text="{Binding OperationStatusText}" Margin="14,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource SecondaryTextBrush}" />
+            </StackPanel>
+            <TextBlock Text="{Binding Status}" Margin="0,10,0,0" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding ErrorMessage}" Margin="0,6,0,0" Foreground="#FFFF8A8A" TextWrapping="Wrap" />
+            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Margin="0,14,0,0" ToolTip="Search device, manufacturer, provider, driver version, class, or INF name" />
+            <DataGrid ItemsSource="{Binding FilteredDrivers}" Margin="0,10,0,0" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column" MinHeight="250" MaxHeight="520">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Device" Binding="{Binding DeviceName}" Width="2*" />
+                    <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}" Width="*" />
+                    <DataGridTextColumn Header="Provider" Binding="{Binding DriverProvider}" Width="*" />
+                    <DataGridTextColumn Header="Version" Binding="{Binding DriverVersion}" Width="*" />
+                    <DataGridTextColumn Header="Driver date" Binding="{Binding DriverDate, StringFormat={}{0:d}}" Width="*" />
+                    <DataGridTextColumn Header="Class" Binding="{Binding DeviceClass}" Width="*" />
+                    <DataGridTextColumn Header="Signed" Binding="{Binding IsSigned}" Width="70" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </Grid>
+</UserControl>
