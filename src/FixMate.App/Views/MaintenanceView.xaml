@@ -3,7 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid Margin="38,34">
         <StackPanel>
-            <TextBlock Text="Maintenance" Margin="0,8,0,0" FontSize="30" FontWeight="SemiBold" />
+            <DockPanel Margin="0,0,0,8">
+                <Border Width="44" Height="44" CornerRadius="13" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                    <TextBlock Text="&#xE90F;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <TextBlock Text="Maintenance" Margin="14,0,0,0" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Center" />
+            </DockPanel>
             <TextBlock Text="Review this user's startup items and safely reclaim space from old temporary files."
                        Margin="0,8,0,0"
                        FontSize="15"

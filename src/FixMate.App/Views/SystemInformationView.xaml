@@ -16,7 +16,12 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <StackPanel>
-                <TextBlock Text="System information" Margin="0,8,0,0" FontSize="30" FontWeight="SemiBold" />
+                <DockPanel Margin="0,0,0,8">
+                    <Border Width="44" Height="44" CornerRadius="13" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                        <TextBlock Text="&#xE950;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <TextBlock Text="System information" Margin="14,0,0,0" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Center" />
+                </DockPanel>
                 <TextBlock Text="Hardware models and Windows details detected on this PC."
                            Margin="0,8,0,0"
                            FontSize="15"

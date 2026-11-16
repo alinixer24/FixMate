@@ -3,8 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid Margin="38,34">
         <StackPanel>
-            <TextBlock Text="Diagnostics" Margin="0,8,0,0" FontSize="30" FontWeight="SemiBold" />
-            <TextBlock Text="Check network connectivity, storage health, and Windows system integrity."
+            <DockPanel Margin="0,0,0,8">
+                <Border Width="44" Height="44" CornerRadius="13" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                    <TextBlock Text="&#xE9CE;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <TextBlock Text="Diagnostics" Margin="14,0,0,0" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Center" />
+            </DockPanel>
+            <TextBlock Text="Review CPU, memory, network, storage, and Windows integrity evidence. The network check looks up www.microsoft.com using configured DNS. Usage snapshots are not hardware fault tests; results are not confirmed root causes, and unsupported or incomplete checks are marked inconclusive."
                        Margin="0,8,0,0"
                        FontSize="15"
                        Foreground="{DynamicResource SecondaryTextBrush}"
@@ -47,20 +52,53 @@
                                                Margin="0,5,0,0"
                                                Foreground="{DynamicResource SecondaryTextBrush}"
                                                TextWrapping="Wrap" />
+                                    <TextBlock Margin="0,8,0,0"
+                                               FontSize="12"
+                                               Foreground="{DynamicResource SecondaryTextBrush}">
+                                        <Run Text="Started: " />
+                                        <Run Text="{Binding StartedAt, StringFormat={}{0:g}}" />
+                                        <Run Text="   Completed: " />
+                                        <Run Text="{Binding CompletedAt, StringFormat={}{0:g}}" />
+                                    </TextBlock>
+                                    <TextBlock Text="TECHNICAL EVIDENCE" Margin="0,10,0,0" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                                    <TextBlock Text="{Binding TechnicalDetails}"
+                                               Margin="0,4,0,0"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               TextWrapping="Wrap" />
+                                    <TextBlock Text="Possible causes (not confirmed)" Margin="0,10,0,0" FontSize="12" FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding PossibleCauses}"
+                                               Margin="0,4,0,0"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               TextWrapping="Wrap" />
+                                    <TextBlock Text="Suggested next steps" Margin="0,10,0,0" FontSize="12" FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding RecommendedNextSteps}"
+                                               Margin="0,4,0,0"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               TextWrapping="Wrap" />
                                 </StackPanel>
                                 <Button Grid.Column="1"
-                                        Content="Run repair"
+                                        Content="Run action"
                                         Command="{Binding DataContext.RepairCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                         CommandParameter="{Binding Area}"
                                         IsEnabled="{Binding DataContext.CanStartOperation, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                         Padding="14,8"
-                                        VerticalAlignment="Center" />
+                                        VerticalAlignment="Center">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CanRunAction}" Value="False">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
                             </Grid>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <TextBlock Text="Repairs run only when selected. Windows integrity and disk repairs request administrator approval; scans may take several minutes."
+            <TextBlock Text="Actions run only when selected. Administrator approval may be requested. Completion of an action does not prove that the underlying issue is resolved; run diagnostics again to verify current evidence."
                        Margin="0,2,0,0"
                        FontSize="12"
                        Foreground="{DynamicResource SecondaryTextBrush}"

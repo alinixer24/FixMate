@@ -3,8 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid Margin="38,34">
         <StackPanel VerticalAlignment="Top">
-            <TextBlock Text="FixMate" FontSize="13" Foreground="{DynamicResource AccentBrush}" />
-            <TextBlock Text="{Binding Title}" Margin="0,8,0,0" FontSize="30" FontWeight="SemiBold" />
+            <DockPanel Margin="0,0,0,8">
+                <Border Width="44" Height="44" CornerRadius="13" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                    <TextBlock Text="&#xE734;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <TextBlock Text="{Binding Title}" Margin="14,0,0,0" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Center" />
+            </DockPanel>
             <TextBlock Text="{Binding Description}"
                        Margin="0,12,0,0"
                        MaxWidth="700"

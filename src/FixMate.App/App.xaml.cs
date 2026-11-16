@@ -52,7 +52,7 @@ public partial class App : Application
         catch (Exception exception)
         {
             MessageBox.Show(
-                $"FixMate could not initialize its local settings database.\n\n{exception.Message}",
+                $"FixMate could not start.\n\n{exception.Message}",
                 "FixMate startup error",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);

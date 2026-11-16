@@ -11,7 +11,12 @@
         </Grid.RowDefinitions>
 
         <StackPanel>
-            <TextBlock Text="Live monitoring" Margin="0,8,0,0" FontSize="30" FontWeight="SemiBold" />
+            <DockPanel Margin="0,0,0,8">
+                <Border Width="44" Height="44" CornerRadius="13" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                    <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <TextBlock Text="Live monitoring" Margin="14,0,0,0" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Center" />
+            </DockPanel>
             <TextBlock Text="Live system usage and activity, sampled while this page is open."
                        Margin="0,8,0,0"
                        FontSize="15"
@@ -29,21 +34,21 @@
         <UniformGrid Grid.Row="1" Columns="2" Margin="0,24,0,0">
             <Border Margin="0,0,8,8" Padding="18" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
                 <StackPanel>
-                    <TextBlock Text="CPU USAGE" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <DockPanel><TextBlock Text="&#xE950;" FontFamily="Segoe MDL2 Assets" Margin="0,0,7,0" Foreground="{DynamicResource AccentBrush}" /><TextBlock Text="CPU USAGE" FontSize="11" Foreground="{DynamicResource AccentBrush}" /></DockPanel>
                     <TextBlock Text="{Binding CpuValue}" Margin="0,8,0,0" FontSize="27" FontWeight="SemiBold" />
                     <TextBlock Text="{Binding CpuDetails}" Margin="0,4,0,0" FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
             <Border Margin="8,0,0,8" Padding="18" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
                 <StackPanel>
-                    <TextBlock Text="MEMORY USAGE" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <DockPanel><TextBlock Text="&#xE964;" FontFamily="Segoe MDL2 Assets" Margin="0,0,7,0" Foreground="{DynamicResource AccentBrush}" /><TextBlock Text="MEMORY USAGE" FontSize="11" Foreground="{DynamicResource AccentBrush}" /></DockPanel>
                     <TextBlock Text="{Binding MemoryValue}" Margin="0,8,0,0" FontSize="27" FontWeight="SemiBold" />
                     <TextBlock Text="{Binding MemoryDetails}" Margin="0,4,0,0" FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
             <Border Margin="0,8,8,0" Padding="18" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
                 <StackPanel>
-                    <TextBlock Text="DISK ACTIVITY" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <DockPanel><TextBlock Text="&#xE964;" FontFamily="Segoe MDL2 Assets" Margin="0,0,7,0" Foreground="{DynamicResource AccentBrush}" /><TextBlock Text="DISK ACTIVITY" FontSize="11" Foreground="{DynamicResource AccentBrush}" /></DockPanel>
                     <TextBlock Margin="0,8,0,0" FontSize="14" FontWeight="SemiBold">
                         <Run Text="Read " /><Run Text="{Binding DiskReadValue, Mode=OneWay}" />
                     </TextBlock>
@@ -55,7 +60,7 @@
             </Border>
             <Border Margin="8,8,0,0" Padding="18" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
                 <StackPanel>
-                    <TextBlock Text="NETWORK ACTIVITY" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <DockPanel><TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" Margin="0,0,7,0" Foreground="{DynamicResource AccentBrush}" /><TextBlock Text="NETWORK ACTIVITY" FontSize="11" Foreground="{DynamicResource AccentBrush}" /></DockPanel>
                     <TextBlock Margin="0,8,0,0" FontSize="14" FontWeight="SemiBold">
                         <Run Text="Receive " /><Run Text="{Binding NetworkReceiveValue, Mode=OneWay}" />
                     </TextBlock>

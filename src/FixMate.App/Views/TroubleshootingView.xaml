@@ -3,7 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid Margin="38,34">
         <StackPanel>
-            <TextBlock Text="Troubleshooting &amp; Error Center" Margin="0,8,0,0" FontSize="30" FontWeight="SemiBold" />
+            <DockPanel Margin="0,0,0,8">
+                <Border Width="44" Height="44" CornerRadius="13" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                    <TextBlock Text="&#xE897;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <TextBlock Text="Troubleshooting &amp; Error Center" Margin="14,0,0,0" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Center" />
+            </DockPanel>
             <TextBlock Text="Choose a symptom for guided checks, or look up a common Windows error code offline."
                        Margin="0,8,0,0"
                        FontSize="15"

@@ -117,7 +117,7 @@ public sealed class MonitoringViewModel : ViewModelBase
         NetworkReceiveValue = FormatRate(snapshot.NetworkReceiveBytesPerSecond);
         NetworkSendValue = FormatRate(snapshot.NetworkSendBytesPerSecond);
         NetworkDetails = JoinDetails(snapshot.NetworkReceiveBytesPerSecond, snapshot.NetworkSendBytesPerSecond);
-        LastUpdatedText = $"Updated {snapshot.CollectedAt.ToLocalTime():T} · Refreshes every second";
+        LastUpdatedText = $"Updated {snapshot.CollectedAt.ToLocalTime():T} · Refreshes every {_settings.MonitoringRefreshIntervalSeconds} second(s)";
 
         AddIfAvailable(CpuHistory, snapshot.CpuUsagePercent);
         AddIfAvailable(MemoryHistory, snapshot.MemoryUsagePercent);

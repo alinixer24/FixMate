@@ -94,10 +94,14 @@ public sealed class DiagnosticsViewModel : ViewModelBase
         try
         {
             var summary = await _provider.RunRepairAsync(area);
-            var status = summary.Contains("Failed", StringComparison.OrdinalIgnoreCase)
-                ? DiagnosticStatus.Failed
-                : DiagnosticStatus.Passed;
-            ReplaceResult(area, status, $"Repair action: {summary}");
+            var actionFailed = summary.Contains("Failed", StringComparison.OrdinalIgnoreCase);
+            var status = actionFailed ? DiagnosticStatus.Failed : DiagnosticStatus.Inconclusive;
+            ReplaceResult(
+                area,
+                status,
+                actionFailed
+                    ? $"The action reported a failure: {summary}"
+                    : $"The action completed: {summary} The underlying issue has not been re-tested; run diagnostics again to check the current evidence.");
         }
         catch (Exception exception)
         {
@@ -136,12 +140,14 @@ public sealed class DiagnosticsViewModel : ViewModelBase
         var index = Results.ToList().FindIndex(result => result.Area == area);
         if (index >= 0)
         {
+            var startedAt = Results[index].StartedAt;
             Results[index] = new DiagnosticResult
             {
                 Area = area,
                 TestName = GetTestName(area),
                 Status = status,
                 Summary = summary,
+                StartedAt = status == DiagnosticStatus.Running ? DateTimeOffset.Now : startedAt,
                 CompletedAt = status == DiagnosticStatus.Running ? null : DateTimeOffset.Now
             };
         }
@@ -163,9 +169,11 @@ public sealed class DiagnosticsViewModel : ViewModelBase
 
     private static string GetTestName(DiagnosticArea area) => area switch
     {
-        DiagnosticArea.Network => "Network connectivity",
-        DiagnosticArea.Storage => "Storage health",
-        DiagnosticArea.WindowsIntegrity => "Windows integrity",
+        DiagnosticArea.Cpu => "CPU utilization",
+        DiagnosticArea.Memory => "Physical memory usage",
+        DiagnosticArea.Network => "Network and DNS",
+        DiagnosticArea.Storage => "Storage capacity and Windows status",
+        DiagnosticArea.WindowsIntegrity => "Windows integrity verification",
         _ => throw new ArgumentOutOfRangeException(nameof(area), area, "Unknown diagnostic area.")
     };
 }
