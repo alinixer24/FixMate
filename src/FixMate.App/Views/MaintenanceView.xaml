@@ -288,6 +288,54 @@
                     </DataGrid>
                 </StackPanel>
             </Border>
+
+            <Border Margin="0,18,0,0"
+                    Padding="20"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="MAINTENANCE HISTORY" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                            <TextBlock Text="Recent startup-item changes and temporary-file cleanup results stored on this device."
+                                       Margin="0,6,0,0"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       TextWrapping="Wrap" />
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                Content="Refresh history"
+                                Command="{Binding RefreshHistoryCommand}"
+                                IsEnabled="{Binding CanStartOperation}"
+                                Padding="14,8"
+                                VerticalAlignment="Center" />
+                    </Grid>
+                    <DataGrid ItemsSource="{Binding History}"
+                              Margin="0,12,0,0"
+                              MaxHeight="240"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              IsReadOnly="True"
+                              HeadersVisibility="Column"
+                              Background="{DynamicResource SurfaceBrush}"
+                              Foreground="{DynamicResource PrimaryTextBrush}"
+                              RowBackground="{DynamicResource SidebarBackgroundBrush}"
+                              AlternatingRowBackground="{DynamicResource SurfaceBrush}"
+                              BorderBrush="{DynamicResource BorderBrush}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Completed" Binding="{Binding CompletedAt, StringFormat={}{0:g}}" Width="*" />
+                            <DataGridTextColumn Header="Operation" Binding="{Binding Operation}" Width="*" />
+                            <DataGridTextColumn Header="Outcome" Binding="{Binding Outcome}" Width="*" />
+                            <DataGridTextColumn Header="Details" Binding="{Binding Details}" Width="3*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </Grid>
 </UserControl>

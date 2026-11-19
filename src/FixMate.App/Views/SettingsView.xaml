@@ -22,6 +22,64 @@
                     BorderThickness="1"
                     CornerRadius="10">
                 <StackPanel>
+                    <TextBlock Text="APPEARANCE &amp; ACCESSIBILITY" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="Theme" Margin="0,12,0,0" FontSize="15" FontWeight="SemiBold" />
+                    <ComboBox ItemsSource="{Binding ThemeModeOptions}" SelectedItem="{Binding SelectedThemeMode}" Margin="0,7,0,0" MaxWidth="260" HorizontalAlignment="Left" />
+                    <TextBlock Text="System follows the Windows app theme preference when available." Margin="0,4,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                    <TextBlock Text="Accent color" Margin="0,12,0,0" FontSize="15" FontWeight="SemiBold" />
+                    <ComboBox ItemsSource="{Binding AccentColorOptions}"
+                              SelectedValuePath="Value"
+                              SelectedValue="{Binding SelectedAccentColor}"
+                              Margin="0,7,0,0"
+                              MaxWidth="260"
+                              HorizontalAlignment="Left">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <CheckBox Content="Reduce navigation animations" IsChecked="{Binding ReduceAnimations}" Margin="0,12,0,0" />
+                    <TextBlock Text="Reduced motion makes the active navigation indicator transition instantly." Margin="0,4,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                    <CheckBox Content="Compact layout" IsChecked="{Binding CompactLayout}" Margin="0,12,0,0" />
+                    <TextBlock Text="Compact mode reduces navigation spacing and standard button padding; controls with custom sizing keep their designed spacing." Margin="0,4,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                    <Button Content="Apply &amp; save appearance"
+                            Command="{Binding SaveCommand}"
+                            IsEnabled="{Binding CanSave}"
+                            Margin="0,16,0,0"
+                            HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding StatusMessage}"
+                               Margin="0,8,0,0"
+                               Foreground="{DynamicResource SuccessBrush}"
+                               TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               Margin="0,8,0,0"
+                               Foreground="{DynamicResource ErrorBrush}"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Border Margin="0,12,0,0"
+                    Padding="20"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <StackPanel>
+                    <TextBlock Text="GENERAL" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <CheckBox Content="Launch FixMate when I sign in to Windows" IsChecked="{Binding LaunchAtStartup}" Margin="0,12,0,0" />
+                    <CheckBox Content="Start FixMate minimized" IsChecked="{Binding StartMinimized}" Margin="0,9,0,0" />
+                    <TextBlock Text="Start-minimized takes effect the next time FixMate launches. Minimize-to-tray and additional languages are not available in this release." Margin="0,6,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Border Margin="0,12,0,0"
+                    Padding="20"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <StackPanel>
                     <TextBlock Text="MONITORING" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
                     <TextBlock Text="Sampling interval"
                                Margin="0,12,0,0"
@@ -31,6 +89,20 @@
                                Margin="0,5,0,0"
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                TextWrapping="Wrap" />
+                    <TextBlock Text="Graph history" Margin="0,12,0,0" FontSize="15" FontWeight="SemiBold" />
+                    <ComboBox ItemsSource="{Binding GraphHistoryOptions}" SelectedItem="{Binding GraphHistoryDurationMinutes}" Margin="0,7,0,0" MaxWidth="260" HorizontalAlignment="Left">
+                        <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding StringFormat={}{0} minutes}" /></DataTemplate></ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <CheckBox Content="Enable maintenance reminder notifications" IsChecked="{Binding NotificationsEnabled}" Margin="0,12,0,0" />
+                    <TextBlock Text="CPU warning threshold" Margin="0,12,0,0" FontSize="15" FontWeight="SemiBold" />
+                    <ComboBox ItemsSource="{Binding WarningThresholdOptions}" SelectedItem="{Binding CpuWarningThresholdPercent}" Margin="0,7,0,0" MaxWidth="260" HorizontalAlignment="Left">
+                        <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding StringFormat={}{0}%}" /></DataTemplate></ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBlock Text="Memory warning threshold" Margin="0,12,0,0" FontSize="15" FontWeight="SemiBold" />
+                    <ComboBox ItemsSource="{Binding WarningThresholdOptions}" SelectedItem="{Binding MemoryWarningThresholdPercent}" Margin="0,7,0,0" MaxWidth="260" HorizontalAlignment="Left">
+                        <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding StringFormat={}{0}%}" /></DataTemplate></ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBlock Text="Warnings are shown only when the corresponding Windows reading is available." Margin="0,4,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
                     <ComboBox ItemsSource="{Binding RefreshIntervalOptions}"
                               SelectedItem="{Binding SelectedRefreshIntervalSeconds}"
                               Margin="0,12,0,0"
@@ -44,7 +116,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
-                        <Button Content="Save settings"
+                        <Button Content="Save all settings"
                                 Command="{Binding SaveCommand}"
                                 IsEnabled="{Binding CanSave}"
                                 Padding="16,9" />
@@ -58,6 +130,30 @@
                                Margin="0,10,0,0"
                                Foreground="#FFFF8A8A"
                                TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Border Margin="0,12,0,0" Padding="20" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+                <StackPanel>
+                    <TextBlock Text="PRIVACY &amp; DATA" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="{Binding PrivacySummary}" Margin="0,8,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                    <TextBlock Text="Diagnostic/export history is stored locally. Report export locations are selected by you; there is no remote telemetry." Margin="0,5,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                    <Button Content="Clear FixMate application data" Command="{Binding ClearApplicationDataCommand}" IsEnabled="{Binding CanSave}" Margin="0,12,0,0" Padding="12,7" HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
+
+            <Border Margin="0,12,0,0" Padding="20" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+                <StackPanel>
+                    <TextBlock Text="APPLICATION" FontSize="11" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="Version" Margin="0,8,0,0" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding ApplicationVersion}" Margin="0,3,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" />
+                    <TextBlock Text="{Binding UpdateSummary}" Margin="0,8,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding LicenseSummary}" Margin="0,5,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                    <WrapPanel Margin="0,12,0,0">
+                        <Button Content="Open logs folder" Command="{Binding OpenLogsFolderCommand}" Padding="12,7" />
+                        <Button Content="Open configuration folder" Command="{Binding OpenConfigurationFolderCommand}" Margin="7,0,0,0" Padding="12,7" />
+                        <Button Content="Restore defaults" Command="{Binding RestoreDefaultsCommand}" IsEnabled="{Binding CanSave}" Margin="7,0,0,0" Padding="12,7" />
+                    </WrapPanel>
                 </StackPanel>
             </Border>
 

@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 	<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
 	<ProjectReference Include="..\FixMate.Core\FixMate.Core.csproj" />
 	<ProjectReference Include="..\FixMate.Infrastructure\FixMate.Infrastructure.csproj" />

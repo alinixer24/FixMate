@@ -9,7 +9,7 @@
                 </Border>
                 <TextBlock Text="Process manager" Margin="14,0,0,0" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Center" />
             </DockPanel>
-            <TextBlock Text="Review the current process snapshot and memory use. This page is read-only; use Windows Task Manager for process actions. Protected processes may not expose all details."
+            <TextBlock Text="Review a Windows process snapshot, CPU deltas, and memory use. CPU is unavailable until a second sample; protected processes may not expose all details. This page is read-only; use Windows Task Manager for process actions."
                        Margin="0,8,0,0" FontSize="15" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
             <StackPanel Orientation="Horizontal" Margin="0,18,0,0">
                 <Button Content="Refresh processes" Command="{Binding RefreshCommand}" IsEnabled="{Binding CanRefresh}" Padding="15,8" />
@@ -22,6 +22,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Process" Binding="{Binding Name}" Width="2*" />
                     <DataGridTextColumn Header="PID" Binding="{Binding Id}" Width="80" />
+                    <DataGridTextColumn Header="CPU" Binding="{Binding CpuUsagePercent, StringFormat={}{0:N1}%, TargetNullValue=Unavailable}" Width="100" />
                     <DataGridTextColumn Header="Memory" Binding="{Binding WorkingSetBytes, StringFormat={}{0:N0} bytes}" Width="150" />
                     <DataGridTextColumn Header="Window" Binding="{Binding WindowTitle}" Width="3*" />
                 </DataGrid.Columns>

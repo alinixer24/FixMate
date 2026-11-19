@@ -1,0 +1,75 @@
+<UserControl x:Class="FixMate.App.Views.NetworkCenterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="28,24">
+            <Border Padding="20" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="14">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock Text="NETWORK CENTER" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}" />
+                        <TextBlock Text="Adapters, configuration &amp; diagnostics" Margin="0,7,0,0" FontSize="21" FontWeight="SemiBold" />
+                        <TextBlock Text="Adapter information is read locally. Ping, traceroute and DNS lookup use only the host you enter and may contact external systems or your configured DNS resolver." Margin="0,6,16,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                    </StackPanel>
+                    <Button Grid.Column="1" Content="Refresh adapters" Command="{Binding RefreshCommand}" VerticalAlignment="Center" Padding="13,8" />
+                </Grid>
+            </Border>
+            <TextBlock Text="{Binding Status}" Margin="0,12,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+            <TextBlock Text="{Binding ErrorMessage}" Margin="0,4,0,0" FontSize="11" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" />
+            <ItemsControl ItemsSource="{Binding Adapters}" Margin="0,12,0,0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,0,0,10" Padding="16" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <StackPanel Margin="0,0,12,0">
+                                    <DockPanel><TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" Foreground="{DynamicResource AccentBrush}"/><TextBlock Text="{Binding Name}" Margin="8,0,0,0" FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap"/></DockPanel>
+                                    <TextBlock Text="{Binding Description}" Margin="0,6,0,0" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap"/>
+                                    <TextBlock Margin="0,8,0,0" FontSize="11"><Run Text="Status: "/><Run Text="{Binding Status}"/><Run Text="   ·   "/><Run Text="{Binding ConnectionType}"/></TextBlock>
+                                    <TextBlock Margin="0,4,0,0" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}"><Run Text="MAC: "/><Run Text="{Binding MacAddress}"/></TextBlock>
+                                    <TextBlock Margin="0,4,0,0" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}"><Run Text="Link speed: "/><Run Text="{Binding LinkSpeedBitsPerSecond, StringFormat={}{0:N0} bps}"/></TextBlock>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="IP ADDRESSES" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}"/>
+                                    <ItemsControl ItemsSource="{Binding IpAddresses}" Margin="0,3,0,0">
+                                        <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontSize="10"/></DataTemplate></ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <TextBlock Text="GATEWAY" Margin="0,8,0,0" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}"/>
+                                    <ItemsControl ItemsSource="{Binding Gateways}" Margin="0,3,0,0">
+                                        <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontSize="10"/></DataTemplate></ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <TextBlock Text="DNS SERVERS" Margin="0,8,0,0" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}"/>
+                                    <ItemsControl ItemsSource="{Binding DnsServers}" Margin="0,3,0,0">
+                                        <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" FontSize="10"/></DataTemplate></ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <TextBlock Margin="0,8,0,0" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}"><Run Text="DHCP: "/><Run Text="{Binding DhcpEnabled, TargetNullValue=Unavailable}"/></TextBlock>
+                                    <TextBlock Text="{Binding WifiDetails}" Margin="0,3,0,0" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Border Margin="0,6,0,0" Padding="18" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="13">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                        <TextBlock Text="NETWORK TOOLS" VerticalAlignment="Center" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}"/>
+                        <Button Grid.Column="1" Content="Open Windows network settings" Command="{Binding OpenNetworkSettingsCommand}" Padding="10,6"/>
+                    </Grid>
+                    <TextBlock Text="Tools may send traffic to the target or your configured resolver. Enter a destination you trust. No speed-test service is configured." Margin="0,5,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap"/>
+                    <DockPanel Margin="0,12,0,0">
+                        <Button Content="Ping" Command="{Binding PingCommand}" IsEnabled="{Binding CanRunTools}" DockPanel.Dock="Right" Margin="6,0,0,0"/>
+                        <Button Content="Traceroute" Command="{Binding TraceRouteCommand}" IsEnabled="{Binding CanRunTools}" DockPanel.Dock="Right" Margin="6,0,0,0"/>
+                        <Button Content="DNS lookup" Command="{Binding DnsLookupCommand}" IsEnabled="{Binding CanRunTools}" DockPanel.Dock="Right" Margin="6,0,0,0"/>
+                        <Button Content="Connectivity test" Command="{Binding ConnectivityTestCommand}" IsEnabled="{Binding CanRunTools}" DockPanel.Dock="Right" Margin="6,0,0,0"/>
+                        <TextBox Text="{Binding Target, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" ToolTip="Host name or IP address"/>
+                    </DockPanel>
+                    <TextBox Text="{Binding ResultText, Mode=OneWay}" Margin="0,10,0,0" MinHeight="92" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True" Background="{DynamicResource SidebarBackgroundBrush}"/>
+                    <TextBlock Text="RECENT CONNECTIVITY HISTORY · STORED LOCALLY" Margin="0,14,0,5" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}"/>
+                    <ItemsControl ItemsSource="{Binding ConnectivityHistory}"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

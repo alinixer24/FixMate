@@ -214,8 +214,11 @@ public sealed class WindowsMaintenanceProvider : IMaintenanceProvider
                 out var parsedDate)
                 ? parsedDate
                 : null;
+            var installLocation = Convert.ToString(applicationKey.GetValue("InstallLocation"), CultureInfo.InvariantCulture)?.Trim() ?? string.Empty;
+            var displayIcon = Convert.ToString(applicationKey.GetValue("DisplayIcon"), CultureInfo.InvariantCulture)?.Trim() ?? string.Empty;
+            var publisherWebsite = Convert.ToString(applicationKey.GetValue("URLInfoAbout"), CultureInfo.InvariantCulture)?.Trim() ?? string.Empty;
             var identity = $"{name}\0{version}\0{publisher}";
-            applications.TryAdd(identity, new InstalledApplication(name, version, publisher, installDate, registryView));
+            applications.TryAdd(identity, new InstalledApplication(name, version, publisher, installDate, registryView, installLocation, displayIcon, publisherWebsite));
         }
     }
 

@@ -1,0 +1,65 @@
+<UserControl x:Class="FixMate.App.Views.MaintenanceSchedulerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="28,24">
+            <Border Padding="20" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="14">
+                <StackPanel>
+                    <TextBlock Text="MAINTENANCE SCHEDULER" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="Reminders that stay on track" Margin="0,7,0,0" FontSize="21" FontWeight="SemiBold" />
+                    <TextBlock Text="Reminders and completion history are stored in the local FixMate database. Due notifications are shown while FixMate is running." Margin="0,6,0,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+            <Border Margin="0,12,0,0" Padding="18" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="13">
+                <StackPanel>
+                    <TextBlock Text="NEW REMINDER" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBox Text="{Binding NewReminderName, UpdateSourceTrigger=PropertyChanged}" Margin="0,7,0,0" ToolTip="Reminder name, e.g. Review startup applications" />
+                    <WrapPanel Margin="0,9,0,0" VerticalAlignment="Center">
+                        <StackPanel Margin="0,0,12,0"><TextBlock Text="DUE DATE" FontSize="9" Foreground="{DynamicResource SecondaryTextBrush}"/><DatePicker SelectedDate="{Binding DueDate}" Margin="0,4,0,0"/></StackPanel>
+                        <StackPanel Margin="0,0,12,0"><TextBlock Text="TIME (LOCAL)" FontSize="9" Foreground="{DynamicResource SecondaryTextBrush}"/><TextBox Text="{Binding DueTime, UpdateSourceTrigger=PropertyChanged}" Width="80" Margin="0,4,0,0"/></StackPanel>
+                        <StackPanel Margin="0,0,12,0"><TextBlock Text="REPEAT" FontSize="9" Foreground="{DynamicResource SecondaryTextBrush}"/><ComboBox ItemsSource="{Binding RepeatIntervals}" SelectedItem="{Binding RepeatInterval}" Width="120" Margin="0,4,0,0"/></StackPanel>
+                        <CheckBox Content="Notify when due" IsChecked="{Binding NotifyOnDue}" VerticalAlignment="Bottom" Margin="0,0,0,7"/>
+                    </WrapPanel>
+                    <Button Content="Add reminder" Command="{Binding AddReminderCommand}" IsEnabled="{Binding CanEdit}" HorizontalAlignment="Left" Margin="0,10,0,0" Padding="14,8" Background="{DynamicResource AccentBrush}" Foreground="White" BorderThickness="0"/>
+                    <TextBlock Text="{Binding Status}" Margin="0,8,0,0" FontSize="11" Foreground="{DynamicResource SuccessBrush}" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding ErrorMessage}" Margin="0,4,0,0" FontSize="11" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+            <Grid Margin="0,18,0,6">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                <TextBlock Text="SCHEDULED" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center"/>
+                <Button Grid.Column="1" Content="Refresh" Command="{Binding RefreshCommand}" IsEnabled="{Binding CanEdit}" Padding="10,6"/>
+            </Grid>
+            <ItemsControl ItemsSource="{Binding Reminders}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,0,0,7" Padding="12" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="9">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" FontSize="13" FontWeight="SemiBold"/>
+                                    <TextBlock Margin="0,4,0,0" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}"><Run Text="Due: "/><Run Text="{Binding DueAt, StringFormat={}{0:g}}"/><Run Text=" · Repeat: "/><Run Text="{Binding RepeatInterval}"/><Run Text=" · Notification: "/><Run Text="{Binding Notify}"/></TextBlock>
+                                    <TextBlock Text="{Binding IsEnabled, StringFormat=Enabled: {0}}" Margin="0,3,0,0" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                </StackPanel>
+                                <WrapPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <Button Content="Complete" Command="{Binding DataContext.CompleteReminderCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" IsEnabled="{Binding DataContext.CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}" Padding="9,6"/>
+                                    <Button Content="Enable / disable" Command="{Binding DataContext.ToggleReminderCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" IsEnabled="{Binding DataContext.CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}" Margin="6,0,0,0" Padding="9,6"/>
+                                </WrapPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock Text="COMPLETED HISTORY" Margin="0,18,0,7" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}"/>
+            <ItemsControl ItemsSource="{Binding CompletedHistory}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,0,0,5" Padding="9" Background="{DynamicResource SurfaceBrush}" CornerRadius="7">
+                            <TextBlock FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap"><Run Text="{Binding CompletedAt, StringFormat={}{0:g}}"/><Run Text=" · "/><Run Text="{Binding ReminderName}"/><Run Text=" · Next: "/><Run Text="{Binding NextDueAt, StringFormat={}{0:g}, TargetNullValue=None}"/></TextBlock>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

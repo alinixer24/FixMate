@@ -72,6 +72,12 @@ FixMate is currently under development. The following features represent the pro
 - Report generation.
 - Notification system.
 
+## Current Implementation
+
+The current WPF shell includes dark graphite styling, page navigation, section search, and an overview populated from Windows system and storage providers. CPU, memory, disk, and network metrics are sampled from Windows APIs/WMI and plotted from live ViewModel history; unsupported or warming-up readings are reported as unavailable. Live Monitor supports pause/resume, refresh, history clearing and ranges, summary statistics, and per-process CPU/memory where Windows provides the readings. CPU and memory warning thresholds are configurable. GPU utilization and hardware temperature sensors are not connected in this build. The charts use a lightweight in-app WPF control rather than an external charting package.
+
+Network Center reads local Windows adapter configuration and provides user-targeted ping, traceroute, DNS lookup, and ICMP connectivity checks. The user must enter the target; the UI warns that network requests may contact external hosts or configured DNS. Network test history is stored locally. Speed test and Wi-Fi SSID/signal data are not implemented. Software Center reads standard uninstall registry entries, supports search and CSV export, and only opens verified local install folders or HTTP(S) publisher URLs recorded by Windows. Reports Center supports selected-section previews, HTML/JSON/CSV export, local export history, and printing; PDF export is not implemented. Maintenance reminders and maintenance-operation history are stored locally in SQLite; history includes completed startup-item changes and temporary-file cleanup outcomes. Due reminders are presented while FixMate is running. Settings persist Dark, Light, or Windows System theme (System follows Windows appearance changes while FixMate is open), named accent colors, reduced navigation animations, compact layout, sidebar preference with a directional collapse/expand icon, monitoring polling/history settings, CPU/RAM warning thresholds, reminder-notification preference, Windows sign-in launch, and start-minimized behavior. Appearance and accessibility selections preview immediately and can be saved directly from their section. Settings saves keep Windows startup integration and persisted preferences consistent; clearing local data removes saved histories, report exports, and logs, then resets preferences. Telemetry is not collected. Minimize-to-tray and additional languages are not implemented. Update checks and license metadata are unavailable because no update feed or license source is configured.
+
 ## Technology Stack
 
 FixMate is being developed using:
@@ -84,7 +90,7 @@ FixMate is being developed using:
 | MVVM | Application architecture |
 | CommunityToolkit.Mvvm | MVVM implementation |
 | SQLite | Local data storage |
-| Microsoft.Extensions.Hosting | Dependency injection and application hosting |
+| Microsoft.Extensions.DependencyInjection | Dependency injection |
 | Windows APIs / WMI | System information and diagnostics |
 | xUnit | Automated testing |
 

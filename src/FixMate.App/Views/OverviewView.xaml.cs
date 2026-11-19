@@ -17,7 +17,7 @@ public partial class OverviewView : UserControl
         if (DataContext is OverviewViewModel viewModel)
         {
             viewModel.Monitoring.Start();
-            await viewModel.LoadStorageSummaryAsync();
+            await viewModel.RefreshAsync();
         }
     }
 

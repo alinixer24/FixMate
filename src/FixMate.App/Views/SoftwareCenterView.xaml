@@ -1,0 +1,54 @@
+<UserControl x:Class="FixMate.App.Views.SoftwareCenterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="28,24">
+            <Border Padding="20" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="14">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock Text="SOFTWARE CENTER" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}" />
+                        <TextBlock Text="Installed applications" Margin="0,7,0,0" FontSize="21" FontWeight="SemiBold" />
+                        <TextBlock Text="Inventory is read from standard Windows uninstall records. Version information is shown when present; FixMate does not infer whether an application is out of date." Margin="0,6,16,0" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Content="Refresh" Command="{Binding RefreshCommand}" Padding="13,8" />
+                        <Button Content="Export CSV" Command="{Binding ExportCommand}" Margin="8,0,0,0" Padding="13,8" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <DockPanel Margin="0,14,0,0">
+                <TextBlock Text="{Binding Status}" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+                <TextBox DockPanel.Dock="Right" Width="250" Margin="12,0,0,0" VerticalContentAlignment="Center" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" ToolTip="Search name, publisher, or version" />
+            </DockPanel>
+            <TextBlock Text="{Binding ErrorMessage}" Margin="0,6,0,0" FontSize="11" Foreground="{DynamicResource ErrorBrush}" TextWrapping="Wrap" />
+            <DataGrid ItemsSource="{Binding FilteredApplications}"
+                      Margin="0,12,0,0"
+                      MinHeight="240"
+                      MaxHeight="560"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      IsReadOnly="True"
+                      HeadersVisibility="Column">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Application" Binding="{Binding Name}" Width="2*" />
+                    <DataGridTextColumn Header="Version" Binding="{Binding Version}" Width="*" />
+                    <DataGridTextColumn Header="Publisher" Binding="{Binding Publisher}" Width="1.5*" />
+                    <DataGridTextColumn Header="Installed" Binding="{Binding InstallDate, StringFormat={}{0:d}, TargetNullValue=Unavailable}" Width="*" />
+                    <DataGridTextColumn Header="Version info" Binding="{Binding VersionInformationStatus}" Width="*" />
+                    <DataGridTemplateColumn Header="Actions" Width="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="Location" Command="{Binding DataContext.OpenLocationCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" Padding="7,4" Margin="0,0,4,0" ToolTip="Open detected installation folder" />
+                                    <Button Content="Website" Command="{Binding DataContext.OpenWebsiteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" Padding="7,4" ToolTip="Open publisher URL recorded by Windows" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock Text="Location opens only a directory verified to exist. Website opens only the HTTP(S) URL recorded in the Windows uninstall entry and may contact an external site." Margin="0,8,0,0" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

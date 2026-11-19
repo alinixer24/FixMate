@@ -11,6 +11,7 @@ public sealed class MaintenanceViewModel : ViewModelBase
 {
     private static readonly TimeSpan CleanupAge = TimeSpan.FromDays(7);
     private readonly IMaintenanceProvider _provider;
+    private readonly IMaintenanceHistoryStore _historyStore;
     private bool _isBusy;
     private string _errorMessage = string.Empty;
     private string _startupListStatus = "Loading startup items...";
@@ -24,9 +25,10 @@ public sealed class MaintenanceViewModel : ViewModelBase
     private bool _isStorageScanRunning;
     private string _cleanupStatus = "Scan to review current-user temporary files older than seven days.";
 
-    public MaintenanceViewModel(IMaintenanceProvider provider)
+    public MaintenanceViewModel(IMaintenanceProvider provider, IMaintenanceHistoryStore historyStore)
     {
         _provider = provider;
+        _historyStore = historyStore;
         RefreshStartupCommand = new AsyncRelayCommand(RefreshStartupAsync, HandleStartupError);
         ToggleStartupCommand = new AsyncRelayCommand(ToggleStartupAsync, HandleStartupError);
         RefreshApplicationsCommand = new AsyncRelayCommand(RefreshApplicationsAsync, HandleApplicationsError);
@@ -37,8 +39,10 @@ public sealed class MaintenanceViewModel : ViewModelBase
         CancelStorageScanCommand = new RelayCommand(CancelStorageScan, () => IsStorageScanRunning);
         ScanTemporaryFilesCommand = new AsyncRelayCommand(ScanTemporaryFilesAsync, HandleCleanupError);
         CleanTemporaryFilesCommand = new AsyncRelayCommand(CleanTemporaryFilesAsync, HandleCleanupError);
+        RefreshHistoryCommand = new AsyncRelayCommand(RefreshHistoryAsync, HandleCleanupError);
     }
 
+    public ObservableCollection<MaintenanceHistoryEntry> History { get; } = [];
     public ObservableCollection<StartupEntry> StartupEntries { get; } = [];
     public ObservableCollection<InstalledApplication> InstalledApplications { get; } = [];
     public ObservableCollection<StorageVolume> StorageVolumes { get; } = [];
@@ -53,6 +57,7 @@ public sealed class MaintenanceViewModel : ViewModelBase
     public RelayCommand CancelStorageScanCommand { get; }
     public ICommand ScanTemporaryFilesCommand { get; }
     public ICommand CleanTemporaryFilesCommand { get; }
+    public ICommand RefreshHistoryCommand { get; }
     public bool CanStartOperation => !_isBusy;
     public bool IsStorageScanRunning => _isStorageScanRunning;
     public string StorageFolderPath => _storageFolderPath;
@@ -144,6 +149,15 @@ public sealed class MaintenanceViewModel : ViewModelBase
         catch (Exception exception)
         {
             HandleStorageError(exception);
+        }
+
+        try
+        {
+            await RefreshHistoryAsync();
+        }
+        catch (Exception exception)
+        {
+            HandleCleanupError(exception);
         }
     }
 
@@ -337,6 +351,16 @@ public sealed class MaintenanceViewModel : ViewModelBase
         _storageScanCancellation?.Cancel();
     }
 
+    private async Task RefreshHistoryAsync()
+    {
+        var entries = await _historyStore.GetHistoryAsync();
+        History.Clear();
+        foreach (var entry in entries)
+        {
+            History.Add(entry);
+        }
+    }
+
     private void OpenInstalledApps()
     {
         try
@@ -383,6 +407,13 @@ public sealed class MaintenanceViewModel : ViewModelBase
         try
         {
             await _provider.SetStartupEntryEnabledAsync(entry, !entry.IsEnabled);
+            await _historyStore.RecordAsync(new MaintenanceHistoryEntry(
+                Guid.NewGuid(),
+                "Startup item changed",
+                "Completed",
+                $"{entry.Name}: {(!entry.IsEnabled ? "enabled" : "disabled")} for the current Windows user.",
+                DateTimeOffset.Now));
+            await RefreshHistoryAsync();
             var entries = await _provider.GetStartupEntriesAsync();
             StartupEntries.Clear();
             foreach (var updatedEntry in entries)
@@ -451,6 +482,13 @@ public sealed class MaintenanceViewModel : ViewModelBase
             CleanupStatus = FormatReport(
                 report,
                 $"Cleanup finished. Deleted {report.DeletedCount:N0} file(s), freeing approximately {FormatBytes(report.DeletedBytes)}.");
+            await _historyStore.RecordAsync(new MaintenanceHistoryEntry(
+                Guid.NewGuid(),
+                "Temporary file cleanup",
+                report.SkippedCount == 0 ? "Completed" : "Completed with skipped items",
+                $"Deleted {report.DeletedCount:N0} file(s), freed approximately {FormatBytes(report.DeletedBytes)}, skipped {report.SkippedCount:N0} item(s).",
+                DateTimeOffset.Now));
+            await RefreshHistoryAsync();
         }
         finally
         {

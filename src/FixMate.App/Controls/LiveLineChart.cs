@@ -25,6 +25,12 @@ public sealed class LiveLineChart : FrameworkElement
         typeof(LiveLineChart),
         new FrameworkPropertyMetadata(100d, FrameworkPropertyMetadataOptions.AffectsRender));
 
+    public static readonly DependencyProperty AutoScaleProperty = DependencyProperty.Register(
+        nameof(AutoScale),
+        typeof(bool),
+        typeof(LiveLineChart),
+        new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender));
+
     private INotifyCollectionChanged? _notifyingValues;
 
     public LiveLineChart()
@@ -49,6 +55,12 @@ public sealed class LiveLineChart : FrameworkElement
     {
         get => (double)GetValue(MaximumValueProperty);
         set => SetValue(MaximumValueProperty, value);
+    }
+
+    public bool AutoScale
+    {
+        get => (bool)GetValue(AutoScaleProperty);
+        set => SetValue(AutoScaleProperty, value);
     }
 
     protected override void OnRender(DrawingContext drawingContext)
@@ -80,7 +92,9 @@ public sealed class LiveLineChart : FrameworkElement
             return;
         }
 
-        var maximum = MaximumValue > 0 ? MaximumValue : 1;
+        var maximum = AutoScale
+            ? Math.Max(1, points.Max())
+            : MaximumValue > 0 ? MaximumValue : 1;
         var geometry = new StreamGeometry();
         using (var context = geometry.Open())
         {
